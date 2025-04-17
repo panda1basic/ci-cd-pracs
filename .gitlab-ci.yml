@@ -1,17 +1,48 @@
 stages:
+  - lint
   - testing
 
-pr2:run-tests:
-  stage: testing
-  image: python:$PYTHON_VERSION
-  script:
+.base:
+  before_script:
     - python -m venv venv
     - source venv/bin/activate
     - pip install -r pr2/requirements.txt
+
+pr2:run-linter:
+  stage: lint
+  image: python:$PYTHON_VERSION
+  extends: .base
+  script:
     - flake8 --config=confs/.flake8 --statistics pr2/test_calculator.py pr2/calculator.py
+
+notify_on_fail_linter:
+  stage: lint
+  allow_failure: true
+  needs:
+    - pr2:run-linter
+  script:
+    - >
+      curl 
+      -X POST 
+      -H "Content-Type: application/json" 
+      -d "{\"parse_mode\": \"HTML\",
+      \"chat_id\": \"$TG_CHAT_ID\", 
+      \"text\": \"🔴Джоба pr2:run-linter провалилась
+      \nПроект <b>$CI_PROJECT_NAME</b> 
+      \nИнициатор <b>$GITLAB_USER_NAME</b>
+      \nОписание коммита <b>$CI_COMMIT_TITLE</b>
+      \nХеш коммита <b>$CI_COMMIT_SHA</b>\"}" 
+      https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage
+  when: on_failure
+
+pr2:run-tests:
+  stage: lint
+  image: python:$PYTHON_VERSION
+  extends: .base
+  script:
     - pytest
 
-notify_on_fail_check-dev:
+notify_on_fail_testing:
   stage: testing
   allow_failure: true
   needs:
