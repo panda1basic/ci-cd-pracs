@@ -1,0 +1,12 @@
+stages:
+  - testing
+
+pr2:install-dependencies:
+  stage: testing
+  image: $PYTHON_IMAGE
+  script:
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install -r pr2/requirements.txt
+    - pytest
+
