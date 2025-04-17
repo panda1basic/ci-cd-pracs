@@ -3,7 +3,7 @@ stages:
   - testing
 
 variables:
-  SHELL: "/bin/sh"
+  PATH: src/pr2
 
 .base:
   before_script:
@@ -11,6 +11,60 @@ variables:
     - source venv/bin/activate
     - pip install -r $PATH/requirements.txt
 
-include:
-  - local: pipelines/pr2.yml
+pr2:run-linter:
+  stage: lint
+  image: python:$PYTHON_VERSION
+  extends: .base
+  script:
+    - flake8 --config=confs/.flake8 --statistics src/pr2/test_calculator.py src/pr2/calculator.py
+
+notify_on_fail_linter:
+  stage: lint
+  allow_failure: true
+  needs:
+    - pr2:run-linter
+  script:
+    - >
+      curl 
+      -X POST 
+      -H "Content-Type: application/json" 
+      -d "{\"parse_mode\": \"HTML\",
+      \"chat_id\": \"$TG_CHAT_ID\", 
+      \"text\": \"🔴Джоба pr2:run-linter провалилась
+      \nПроект <b>$CI_PROJECT_NAME</b> 
+      \nИнициатор <b>$GITLAB_USER_NAME</b>
+      \nОписание коммита <b>$CI_COMMIT_TITLE</b>
+      \nХеш коммита <b>$CI_COMMIT_SHA</b>\"}" 
+      https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage
+  when: on_failure
+
+pr2:run-tests:
+  stage: testing
+  image: python:$PYTHON_VERSION
+  extends: .base
+  needs:
+    - pr2:run-linter
+  script:
+    - pytest
+
+notify_on_fail_testing:
+  stage: testing
+  allow_failure: true
+  needs:
+    - pr2:run-tests
+  script:
+    - >
+      curl 
+      -X POST 
+      -H "Content-Type: application/json" 
+      -d "{\"parse_mode\": \"HTML\",
+      \"chat_id\": \"$TG_CHAT_ID\", 
+      \"text\": \"🔴Джоба pr2:run-tests провалилась
+      \nПроект <b>$CI_PROJECT_NAME</b> 
+      \nИнициатор <b>$GITLAB_USER_NAME</b>
+      \nОписание коммита <b>$CI_COMMIT_TITLE</b>
+      \nХеш коммита <b>$CI_COMMIT_SHA</b>\"}" 
+      https://api.telegram.org/bot$TG_BOT_TOKEN/sendMessage
+  when: on_failure
+
 
