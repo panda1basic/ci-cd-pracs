@@ -8,7 +8,7 @@ pr2:run-tests:
     - python -m venv venv
     - source venv/bin/activate
     - pip install -r pr2/requirements.txt
-    - flake8 --config=pr2/.flake8 -statistics pr2/test_calculator.py pr2/calculator.py
+    - flake8 --config=confs/.flake8 -statistics pr2/test_calculator.py pr2/calculator.py
     - pytest
 
 notify_on_fail_check-dev:
