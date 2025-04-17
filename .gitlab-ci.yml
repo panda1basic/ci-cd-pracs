@@ -1,7 +1,7 @@
 stages:
   - testing
 
-pr2:install-dependencies:
+pr2:run-tests:
   stage: testing
   image: $PYTHON_IMAGE
   script:
