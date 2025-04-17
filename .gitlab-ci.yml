@@ -36,7 +36,7 @@ notify_on_fail_linter:
   when: on_failure
 
 pr2:run-tests:
-  stage: lint
+  stage: testing
   image: python:$PYTHON_VERSION
   extends: .base
   needs:
