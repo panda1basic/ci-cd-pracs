@@ -6,14 +6,14 @@ stages:
   before_script:
     - python -m venv venv
     - source venv/bin/activate
-    - pip install -r pr2/requirements.txt
+    - pip install -r src/requirements.txt
 
 pr2:run-linter:
   stage: lint
   image: python:$PYTHON_VERSION
   extends: .base
   script:
-    - flake8 --config=confs/.flake8 --statistics pr2/test_calculator.py pr2/calculator.py
+    - flake8 --config=confs/.flake8 --statistics src/pr2/test_calculator.py src/pr2/calculator.py
 
 notify_on_fail_linter:
   stage: lint
