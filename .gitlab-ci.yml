@@ -39,6 +39,8 @@ pr2:run-tests:
   stage: lint
   image: python:$PYTHON_VERSION
   extends: .base
+  needs:
+    - pr2:run-linter
   script:
     - pytest
 
