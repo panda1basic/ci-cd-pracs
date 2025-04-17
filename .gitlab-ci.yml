@@ -2,6 +2,9 @@ stages:
   - lint
   - testing
 
+variables:
+  SHELL: "/bin/sh"
+
 .base:
   before_script:
     - python -m venv venv
