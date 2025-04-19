@@ -1,0 +1,14 @@
+include:
+  - local: pipelines/templates/bases.yml
+
+deploy:
+  stage: deploy
+  extends: .base
+  needs:
+    - push
+  script:
+    - unset DOCKER_HOST
+    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - docker pull burmatovdd/flask-app:$CI_COMMIT_SHA
+    - docker stop $(docker ps -a -q)
+    - docker run -d -p 80:5000 burmatovdd/flask-app:$CI_COMMIT_SHA

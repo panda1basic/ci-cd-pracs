@@ -41,12 +41,10 @@ push:
 
 deploy:
   stage: deploy
-  tags:
-    - security
   needs:
     - push
-  script:
-    - unset DOCKER_HOST
-    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - docker pull burmatovdd/flask-app:$CI_COMMIT_SHA
-    - docker run -d -p 80:5000 burmatovdd/flask-app:$CI_COMMIT_SHA
+  trigger:
+    strategy: depend
+    include:
+      - local: pipelines/deploy.yml
+
