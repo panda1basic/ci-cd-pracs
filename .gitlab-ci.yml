@@ -28,16 +28,16 @@ variables:
 #    TEST_PATH: auto_tests/test_app.py
 #    REQUIREMENTS_PATH: src/pr3
 #
-#push:
-#  stage: push
+push:
+  stage: push
 #  needs:
 #    - testing
-#  trigger:
-#    strategy: depend
-#    include:
-#      - local: pipelines/push.yml
-#  variables:
-#    REQUIREMENTS_PATH: $PROJECT_PATH
+  trigger:
+    strategy: depend
+    include:
+      - local: pipelines/push.yml
+  variables:
+    REQUIREMENTS_PATH: $PROJECT_PATH
 
 deploy:
   stage: deploy
