@@ -8,7 +8,7 @@ stages:
   before_script:
     - python -m venv venv
     - source venv/bin/activate
-    - pip install -r $PATH/requirements.txt
+    - pip install -r $PROJECT_PATH_/requirements.txt
 
 include:
   - local: pipelines/pr2.yml
