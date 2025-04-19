@@ -1,7 +1,10 @@
 stages:
   - lint
   - testing
-  - build
+  - push
+
+variables:
+  PROJECT_PATH: src/pr3
 
 linting:
   stage: lint
@@ -10,8 +13,7 @@ linting:
     include:
       - local: pipelines/python-linter.yml
   variables:
-    PROJECT_PATH: src/pr3
-    REQUIREMENTS_PATH: src/pr3
+    REQUIREMENTS_PATH: $PROJECT_PATH
 
 testing:
   stage: testing
@@ -24,3 +26,14 @@ testing:
   variables:
     TEST_PATH: auto_tests/test_app.py
     REQUIREMENTS_PATH: src/pr3
+
+push:
+  stage: push
+  needs:
+    - testing
+  trigger:
+    strategy: depend
+    include:
+      - local: pipelines/push.yml
+  variables:
+    REQUIREMENTS_PATH: $PROJECT_PATH

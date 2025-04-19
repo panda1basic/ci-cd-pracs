@@ -1,15 +1,7 @@
 include:
   - local: pipelines/templates/bases.yml
 
-variables:
-  PROJECT_PATH: src/pr3
-
-.base:
-  tags:
-    - security
-
 pr3:build:
-  stage: build
   extends: .base
   script:
     - unset DOCKER_HOST
