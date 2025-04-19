@@ -2,14 +2,14 @@ stages:
   - lint
   - testing
 
-variables:
-  PATH: src/pr2
-
 .base:
   before_script:
     - python -m venv venv
     - source venv/bin/activate
     - pip install -r $PATH/requirements.txt
+
+variables:
+  PATH: src/pr2
 
 pr2:run-linter:
   stage: lint
