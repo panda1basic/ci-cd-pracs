@@ -1,12 +1,10 @@
-include:
-  - local: pipelines/templates/bases.yml
-
 deploy:
   stage: deploy
-  extends: .base
+  tags:
+    - deployer
   script:
     - unset DOCKER_HOST
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - docker pull burmatovdd/flask-app:1.0.0
-    - docker stop flask-app
-    - docker run -d --name flask-app -p 80:5000 burmatovdd/flask-app:1.0.0
+    - docker pull burmatovdd/flask-app:$CI_COMMIT_SHA
+    - docker stop flask-app || true
+    - docker run -d --name flask-app -p 80:5000 burmatovdd/flask-app:$CI_COMMIT_SHA
