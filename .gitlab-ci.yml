@@ -3,15 +3,16 @@ stages:
   - testing
   - build
 
-include:
+#include:
 #  - local: pipelines/pr2.yml
 #  - local: pipelines/templates/bases.yml
 #  - local: pipelines/python-linter.yml
 linting:
   stage: lint
   trigger:
+    strategy: depend
     include:
       - local: pipelines/python-linter.yml
   variables:
-    PROJECT_PATH: auto_tests/
+    PROJECT_PATH: auto_tests
 
