@@ -1,7 +1,7 @@
 include:
   - local: pipelines/templates/bases.yml
 
-pr2:run-linter:
+linting:
   image: python:$PYTHON_VERSION
   extends:
     - .base

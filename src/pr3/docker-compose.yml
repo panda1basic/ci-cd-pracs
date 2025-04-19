@@ -12,11 +12,10 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DATABASE=${POSTGRES_DATABASE}
 
-
   web:
     depends_on:
       - postgres
-    image: flask-app:1.0.0
+    image: ${PROD_IMAGE}
     container_name: flask-app
     ports:
       - '8080:5000'
