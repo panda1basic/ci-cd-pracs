@@ -8,7 +8,7 @@ pr2:run-linter:
     - .base
     - .base-python
   script:
-    - flake8 --config=confs/.flake8 --statistics src/pr2/
+    - flake8 --config=confs/.flake8 --statistics auto_tests/
 
 notify_on_fail_linter:
   stage: lint
