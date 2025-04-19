@@ -11,5 +11,5 @@ pr3:build:
   script:
     - unset DOCKER_HOST
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - docker build $PROJECT_PATH/docker-compose.yml -t burmatovdd/flask-app:$CI_COMMIT_SHA
+    - docker build -t burmatovdd/flask-app:$CI_COMMIT_SHA -f $PROJECT_PATH/Dockerfile .
     - docker push burmatovdd:flask-app:$CI_COMMIT_SHA
