@@ -4,8 +4,6 @@ include:
 deploy:
   stage: deploy
   extends: .base
-  needs:
-    - push
   script:
     - unset DOCKER_HOST
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
