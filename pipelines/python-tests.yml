@@ -5,7 +5,7 @@ pr2:run-tests:
     - .base
     - .base-python
   script:
-    - pytest
+    - pytest $PROJECT_PATH
 
 notify_on_fail_testing:
   stage: testing
