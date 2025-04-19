@@ -3,7 +3,8 @@ stages:
   - testing
 
 .base:
-  tags: security
+  tags:
+    - security
   before_script:
     - python -m venv venv
     - source venv/bin/activate
