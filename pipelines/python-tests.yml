@@ -1,3 +1,6 @@
+include:
+  - local: pipelines/templates/bases.yml
+
 pr2:run-tests:
   stage: testing
   image: python:$PYTHON_VERSION
