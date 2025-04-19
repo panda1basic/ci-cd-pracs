@@ -7,6 +7,6 @@ deploy:
   script:
     - unset DOCKER_HOST
     - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-    - docker pull burmatovdd/flask-app:$CI_COMMIT_SHA
+    - docker pull burmatovdd/flask-app:1.0.0
     - docker stop flask-app
-    - docker run -d --name flask-app -p 80:5000 burmatovdd/flask-app:$CI_COMMIT_SHA
+    - docker run -d --name flask-app -p 80:5000 burmatovdd/flask-app:1.0.0
