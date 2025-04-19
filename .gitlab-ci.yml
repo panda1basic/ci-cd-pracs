@@ -1,6 +1,7 @@
 stages:
   - lint
   - testing
+  - build
 
 include:
 #  - local: pipelines/pr2.yml
