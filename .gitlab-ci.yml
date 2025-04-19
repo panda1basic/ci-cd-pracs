@@ -2,14 +2,8 @@ stages:
   - lint
   - testing
 
-.base:
-  tags:
-    - security
-  before_script:
-    - python -m venv venv
-    - source venv/bin/activate
-    - pip install -r $PROJECT_PATH/requirements.txt
-
 include:
-  - local: pipelines/pr2.yml
+#  - local: pipelines/pr2.yml
+  - local: pipelines/pr3.yml
+
 
