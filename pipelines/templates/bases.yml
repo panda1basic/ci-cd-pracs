@@ -1,0 +1,9 @@
+.base:
+  tags:
+    - security
+
+.base-python:
+  before_script:
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install -r $PROJECT_PATH/requirements.txt

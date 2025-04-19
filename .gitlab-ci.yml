@@ -5,6 +5,7 @@ stages:
 
 include:
 #  - local: pipelines/pr2.yml
-  - local: pipelines/pr3.yml
+  - local: pipelines/templates/bases.yml
+  - local: pipelines/python-linter.yml
 
 
