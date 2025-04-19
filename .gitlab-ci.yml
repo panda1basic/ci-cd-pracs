@@ -2,6 +2,7 @@ stages:
   - lint
   - testing
   - push
+  - deploy
 
 variables:
   PROJECT_PATH: src/pr3
@@ -37,3 +38,11 @@ push:
       - local: pipelines/push.yml
   variables:
     REQUIREMENTS_PATH: $PROJECT_PATH
+
+deploy:
+  stage: deploy
+  tags:
+    - security
+  script:
+    - docker pull burmatovdd/flask-app:$CI_COMMIT_SHA
+    - docker run d -p 80:5000 burmatovdd/flask-app:$CI_COMMIT_SHA
