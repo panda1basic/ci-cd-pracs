@@ -1,17 +1,17 @@
-variables:
-  PROJECT_PATH: src/pr2
+#variables:
+#  PROJECT_PATH: src/pr2
 
 pr2:run-linter:
-  stage: lint
+#  stage: lint
   image: python:$PYTHON_VERSION
   extends:
     - .base
     - .base-python
   script:
-    - flake8 --config=confs/.flake8 --statistics auto_tests/
+    - flake8 --config=confs/.flake8 --statistics $PROJECT_PATH
 
 notify_on_fail_linter:
-  stage: lint
+#  stage: lint
   allow_failure: true
   needs:
     - pr2:run-linter
