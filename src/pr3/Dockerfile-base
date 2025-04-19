@@ -1,0 +1,9 @@
+FROM centos:centos7 as base
+
+RUN yum -y install dnf-plugins-core
+RUN yum config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+RUN yum install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+RUN systemctl enable --now docker
+
+RUN docker -v
