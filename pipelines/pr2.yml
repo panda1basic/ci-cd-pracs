@@ -1,5 +1,5 @@
 variables:
-  PATH: src/pr2
+  PROJECT_PATH: src/pr2
 
 pr2:run-linter:
   stage: lint
