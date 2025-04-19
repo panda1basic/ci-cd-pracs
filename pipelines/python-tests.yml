@@ -7,7 +7,7 @@ pr2:run-tests:
     - .base
     - .base-python
   script:
-    - pytest $PROJECT_PATH
+    - pytest $TEST_PATH
 
 notify_on_fail_testing:
   allow_failure: true
