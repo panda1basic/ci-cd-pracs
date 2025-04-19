@@ -22,5 +22,5 @@ testing:
     include:
       - local: pipelines/python-tests.yml
   variables:
-    TEST_PATH: auto-test/test_app.py
+    TEST_PATH: auto_tests/test_app.py
     REQUIREMENTS_PATH: src/pr3
