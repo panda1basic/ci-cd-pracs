@@ -7,4 +7,3 @@
     - python -m venv venv
     - source venv/bin/activate
     - pip install -r $REQUIREMENTS_PATH/requirements.txt
-    - pip install -e .
