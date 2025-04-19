@@ -5,11 +5,10 @@ stages:
 
 include:
 #  - local: pipelines/pr2.yml
-  - local: pipelines/templates/bases.yml
+#  - local: pipelines/templates/bases.yml
 #  - local: pipelines/python-linter.yml
 linting:
   stage: lint
-  extends: .base
   trigger:
     include:
       - local: pipelines/python-linter.yml

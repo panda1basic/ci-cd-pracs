@@ -1,6 +1,9 @@
 #variables:
 #  PROJECT_PATH: src/pr2
 
+include:
+  - local: pipelines/templates/bases.yml
+
 pr2:run-linter:
 #  stage: lint
   image: python:$PYTHON_VERSION
