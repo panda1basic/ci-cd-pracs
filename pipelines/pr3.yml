@@ -7,6 +7,6 @@ variables:
 
 pr3:build:
   stage: build
-  shell:
+  script:
    - docker build $PROJECT_PATH/docker-compose.yml -t burmatovdd:flask-app:$CI_COMMIT_SHA
    - docker push burmatovdd:flask-app:$CI_COMMIT_SHA
