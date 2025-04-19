@@ -15,4 +15,5 @@ linting:
       - local: pipelines/python-linter.yml
   variables:
     PROJECT_PATH: auto_tests
+    REQUIREMENTS_PATH: src/pr2
 
