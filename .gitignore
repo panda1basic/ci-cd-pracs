@@ -1,2 +1,6 @@
-pr2/venv
+src/pr2/venv
+src/venv
 *.docx
+src/pr3/.env
+src/pr3/pg-data/*
+src/pr3/pg-data
