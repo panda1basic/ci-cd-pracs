@@ -1,6 +1,6 @@
 .base:
   tags:
-    - security
+    - builder
 
 .base-python:
   before_script:
