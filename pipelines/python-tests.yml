@@ -13,7 +13,7 @@ testing:
 notify_on_fail_testing:
   allow_failure: true
   needs:
-    - pr2:run-tests
+    - testing
   script:
     - >
       curl 

@@ -12,7 +12,7 @@ linting:
 notify_on_fail_linter:
   allow_failure: true
   needs:
-    - pr2:run-linter
+    - linting
   script:
     - >
       curl 
