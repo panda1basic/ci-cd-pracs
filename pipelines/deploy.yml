@@ -22,6 +22,8 @@ deploy:run:
     - builder
   extends:
     - .base
+  needs:
+    - deploy:prepare
   script:
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
