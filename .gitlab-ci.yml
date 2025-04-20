@@ -30,8 +30,8 @@ variables:
 
 push:
   stage: push
-  needs:
-    - testing
+#  needs:
+#    - testing
   trigger:
     strategy: depend
     include:
