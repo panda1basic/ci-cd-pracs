@@ -1,0 +1,27 @@
+services:
+  auth_service:
+    image: ${PROD_IMAGE-auth_service}
+    container_name: auth_service
+    ports:
+      - '5001:5001'
+    restart: always
+
+  orders_service:
+    image: ${PROD_IMAGE-orders_service}
+    container_name: orders_service
+    ports:
+      - '5002:5002'
+    restart: always
+    depends_on:
+      - auth_service
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - '80:80'
+    volumes:
+      - ${NGINX_CONF_PATH}:/etc/nginx/nginx.conf
+    depends_on:
+      - auth_service
+      - orders_service
+

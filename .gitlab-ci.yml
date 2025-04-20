@@ -5,7 +5,7 @@ stages:
   - deploy
 
 variables:
-  PROJECT_PATH: src/pr4
+  PROJECT_PATH: src/pr7
 
 linting:
   stage: lint
@@ -25,9 +25,9 @@ testing:
     include:
       - local: pipelines/python-tests.yml
   variables:
-    PROJECT_PATH: src/pr4/auth_service/app.py
     TEST_PATH: auto_tests/test_auth.py
-    REQUIREMENTS_PATH: src/pr4
+    REQUIREMENTS_PATH: ${PROJECT_PATH}
+    PROJECT_PATH: ${PROJECT_PATH}/auth_service/app.py
 
 push:
   stage: push

@@ -1,5 +1,5 @@
 import pytest
-from src.pr4.auth_service.app import app
+from src.pr7.auth_service.app import app
 
 
 @pytest.fixture
