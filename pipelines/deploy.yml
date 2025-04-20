@@ -15,5 +15,6 @@ deploy:
   script:
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - echo $SSH_PRIVATE_KEY
     - chmod -R 700 ~/.ssh
     - ssh -i ~/.ssh/id_rsa deployer@89.169.1.105 'echo $CI_PROJECT_NAME'
