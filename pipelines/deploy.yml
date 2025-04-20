@@ -16,11 +16,7 @@ deploy:
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod -R 700 ~/.ssh
-    - sed -i.bak '/burmatovdd\/flask-app/ c\ PROD_IMAGE=burmatovdd/flask-app:$CI_COMMIT_SHA' src/pr3/.env
-    - cat src/pr3/.env
-#    - >
-#      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
-#      'docker login -u $DOCKER_USER -p $DOCKER_PASSWORD &&
-#      docker pull burmatovdd/flask-app:$CI_COMMIT_SHA &&
-#      docker stop flask-app || true &&
-#      '
+    - >
+      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
+      'sed -i.bak '/burmatovdd\/flask-app/ c\ PROD_IMAGE=burmatovdd/flask-app:$CI_COMMIT_SHA' /home/deployer/.env
+      '
