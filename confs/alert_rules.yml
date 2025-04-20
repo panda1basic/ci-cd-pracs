@@ -1,0 +1,11 @@
+groups:
+  - name: container-availability
+    rules:
+      - alert: FlaskAppContainerDown
+        expr: absent(container_last_seen{name="flask-app"})
+        for: 1m
+        labels:
+          severity: critical
+        annotations:
+          summary: "Контейнер flask-app не найден"
+          description: "cAdvisor не видел контейнер flask-app более 1 минуты."

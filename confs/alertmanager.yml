@@ -1,0 +1,26 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  receiver: telegram
+  group_by: ['alertname']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 3h
+
+receivers:
+  - name: telegram
+    telegram_configs:
+      - bot_token: "7225889573:AAF_ACKcR3Mo-D2qhrQ4zY-smf_Q39IC1FM"
+        chat_id: -4634615221
+        message: |
+          {{- range .Alerts }}
+          *[{{ .Status }}]* {{ .Labels.alertname }}
+          > {{ .Annotations.summary }}
+          {{- if .Annotations.description }}
+          _{{ .Annotations.description }}_
+          {{- end }}
+          *Время:* {{ .StartsAt.Format "2006-01-02 15:04:05" }}
+          {{- end }}
+        parse_mode: Markdown
+        send_resolved: true
