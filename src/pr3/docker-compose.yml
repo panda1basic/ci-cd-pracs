@@ -46,3 +46,16 @@ services:
       - ./loki-config.yml:/etc/loki/local-config.yaml
     command: -config.file=/etc/loki/local-config.yaml
     restart: always
+
+  promtail:
+    container_name: promtail
+    image: grafana/promtail:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./promtail.yaml:/etc/promtail/promtail.yaml
+      - /tmp:/tmp
+    command:
+      - -config.file=/etc/promtail/promtail.yaml
+    ports:
+      - '9080:9080'
+    restart: always
