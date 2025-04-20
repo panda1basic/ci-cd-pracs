@@ -13,5 +13,4 @@ deploy:
     - chmod -R 700 ~/.ssh
     - >
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
-      "sed -i.bak '/burmatovdd\/flask-app/ c\PROD_IMAGE=burmatovdd/flask-app:$CI_COMMIT_SHA' /home/deployer/.env &&
-      docker compose up -d"
+      "sed -i.bak '/burmatovdd\/flask-app/ c\PROD_IMAGE-$APP_DIR=burmatovdd/$APP_DIR:$CI_COMMIT_SHA' /home/deployer/src/pr4.env"

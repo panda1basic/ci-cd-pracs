@@ -7,31 +7,31 @@ stages:
 variables:
   PROJECT_PATH: src/pr4
 
-#linting:
-#  stage: lint
-#  trigger:
-#    strategy: depend
-#    include:
-#      - local: pipelines/python-linter.yml
-#  variables:
-#    REQUIREMENTS_PATH: $PROJECT_PATH
-#
-#testing:
-#  stage: testing
-#  needs:
-#    - linting
-#  trigger:
-#    strategy: depend
-#    include:
-#      - local: pipelines/python-tests.yml
-#  variables:
-#    TEST_PATH: auto_tests/test_app.py
-#    REQUIREMENTS_PATH: src/pr3
+linting:
+  stage: lint
+  trigger:
+    strategy: depend
+    include:
+      - local: pipelines/python-linter.yml
+  variables:
+    REQUIREMENTS_PATH: $PROJECT_PATH
+
+testing:
+  stage: testing
+  needs:
+    - linting
+  trigger:
+    strategy: depend
+    include:
+      - local: pipelines/python-tests.yml
+  variables:
+    TEST_PATH: auto_tests/test_app.py
+    REQUIREMENTS_PATH: src/pr3
 
 push:
   stage: push
-#  needs:
-#    - testing
+  needs:
+    - testing
   trigger:
     strategy: depend
     include:
@@ -39,11 +39,11 @@ push:
   variables:
     REQUIREMENTS_PATH: $PROJECT_PATH
 
-#deploy:
-#  stage: deploy
-#  needs:
-#    - push
-#  trigger:
-#    strategy: depend
-#    include:
-#      - local: pipelines/deploy.yml
+deploy:
+  stage: deploy
+  needs:
+    - push
+  trigger:
+    strategy: depend
+    include:
+      - local: pipelines/deploy.yml

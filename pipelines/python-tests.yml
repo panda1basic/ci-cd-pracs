@@ -6,6 +6,7 @@ testing:
   extends:
     - .base
     - .base-python
+    - .base-pr4
   script:
     - export PYTHONPATH="$PWD"
     - pytest $TEST_PATH
