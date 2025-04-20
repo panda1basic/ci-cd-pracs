@@ -13,5 +13,7 @@ deploy:
   tags:
     - deployer
   script:
-    - pwd
     - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod -R 700 ~/.ssh
+    - ssh deployer@89.169.1.105 'echo $CI_PROJECT_NAME'
