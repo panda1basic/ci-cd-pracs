@@ -1,14 +1,3 @@
-#deploy:
-#  tags:
-#    - deployer
-#  script:
-#    - unset DOCKER_HOST
-#    - docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-#    - docker pull burmatovdd/flask-app:$CI_COMMIT_SHA
-#    - docker stop flask-app || true
-#    - docker rm -f flask-app || true
-#    - docker run -d --name flask-app -p 80:5000 burmatovdd/flask-app:$CI_COMMIT_SHA
-
 deploy:
   tags:
     - builder
