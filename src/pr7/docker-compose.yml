@@ -1,13 +1,13 @@
 services:
   auth_service:
-    image: ${PROD_IMAGE-auth_service}
+    image: ${PROD_IMAGE_auth_service}
     container_name: auth_service
     ports:
       - '5001:5001'
     restart: always
 
   orders_service:
-    image: ${PROD_IMAGE-orders_service}
+    image: ${PROD_IMAGE_orders_service}
     container_name: orders_service
     ports:
       - '5002:5002'
