@@ -1,6 +1,12 @@
+include:
+  - local: pipelines/templates/bases.yml
+
 deploy:
   tags:
     - builder
+  extends:
+    - .base
+    - .base-pr4
   script:
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
