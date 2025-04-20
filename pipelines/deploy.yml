@@ -13,4 +13,4 @@ deploy:
   tags:
     - deployer
   script:
-    — mkdir -p ~/.ssh
+    - mkdir -p ~/.ssh
