@@ -21,7 +21,7 @@ services:
     ports:
       - '80:80'
     volumes:
-      - ${NGINX_CONF_PATH}:/etc/nginx/nginx.conf
+      - ${NGINX_CONF_PATH}:/etc/nginx/conf.d/default.conf
     depends_on:
       - auth_service
       - orders_service
