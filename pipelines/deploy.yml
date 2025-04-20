@@ -1,7 +1,7 @@
 include:
   - local: pipelines/templates/bases.yml
 
-deploy:
+deploy:prepare:
   tags:
     - builder
   extends:
@@ -14,5 +14,19 @@ deploy:
     - >
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
       "cd /home/deployer/db-project/src/pr7/ &&
-      sed -i.bak '/PROD_IMAGE_$APP_DIR/ c\PROD_IMAGE_$APP_DIR=burmatovdd/$APP_DIR:$CI_COMMIT_SHA' ./.env &&
+      sed -i.bak '/PROD_IMAGE_$APP_DIR/ c\PROD_IMAGE_$APP_DIR=burmatovdd/$APP_DIR:$CI_COMMIT_SHA' ./.env"
+
+
+deploy:run:
+  tags:
+    - builder
+  extends:
+    - .base
+  script:
+    - mkdir -p ~/.ssh
+    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+    - chmod -R 700 ~/.ssh
+    - >
+      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
+      "cd /home/deployer/db-project/src/pr7/ &&
       docker compose up -d"
