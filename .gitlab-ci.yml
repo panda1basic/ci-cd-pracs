@@ -25,9 +25,9 @@ testing:
     include:
       - local: pipelines/python-tests.yml
   variables:
-    TEST_PATH: auto_tests/test_auth.py
-    REQUIREMENTS_PATH: ${PROJECT_PATH}
     PROJECT_PATH: ${PROJECT_PATH}/auth_service/app.py
+    TEST_PATH: auto_tests/test_auth.py
+    REQUIREMENTS_PATH: src/pr7
 
 push:
   stage: push
