@@ -16,4 +16,4 @@ deploy:
     - mkdir -p ~/.ssh
     - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
     - chmod -R 700 ~/.ssh
-    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105 'echo $CI_PROJECT_NAME'
+    - ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105 'touch text.txt'
