@@ -7,8 +7,6 @@ orders = []
 
 
 @app.route('/create_order', methods=['POST'])
-
-
 def create_order():
     auth_token = request.headers.get('Authorization')
 

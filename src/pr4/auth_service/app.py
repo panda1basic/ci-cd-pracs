@@ -6,8 +6,6 @@ users = {'user1': 'password123', 'user2': 'securepass'}
 
 
 @app.route('/login', methods=['POST'])
-
-
 def login():
     data = request.json
     username = data.get('username')
