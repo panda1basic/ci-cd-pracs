@@ -14,7 +14,7 @@ deploy:prepare:
     - >
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
       "export IMAGE_NAME=$IMAGE_NAME && 
-      envsubst < deployment.yaml"
+      envsubst < deployment.yml"
   variables:
     IMAGE_NAME: burmatovdd/k8s-app:$CI_COMMIT_SHA
 
@@ -35,7 +35,7 @@ deploy:run:
     - chmod -R 700 ~/.ssh
     - >
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
-      "kubectl apply -f deployment.yaml"
+      "kubectl apply -f deployment.yml"
 
 #      "cd /home/deployer/db-project/src/pr7/ &&
 #      docker compose up -d"
