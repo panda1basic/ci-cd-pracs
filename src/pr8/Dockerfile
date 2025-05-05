@@ -4,5 +4,5 @@ COPY src/pr8/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 FROM builder as prod
-COPY src/pr3/app.py app.py
+COPY src/pr8/app.py app.py
 CMD ["python", "app.py"]
