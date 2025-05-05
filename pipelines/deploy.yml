@@ -1,7 +1,7 @@
 include:
   - local: pipelines/templates/bases.yml
 
-deploy:prepare:
+deploy:
   tags:
     - builder
   extends:
@@ -14,7 +14,7 @@ deploy:prepare:
     - >
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
       "export IMAGE_NAME=$IMAGE_NAME && 
-      envsubst < deployment.yml"
+      envsubst < deployment.yml | kubectl apply -f deployment.yml"
   variables:
     IMAGE_NAME: burmatovdd/k8s-app:$CI_COMMIT_SHA
 
@@ -22,20 +22,18 @@ deploy:prepare:
 #      sed -i.bak '/PROD_IMAGE_$APP_DIR/ c\PROD_IMAGE_$APP_DIR=burmatovdd/$APP_DIR:$CI_COMMIT_SHA' ./.env"
 
 
-deploy:run:
-  tags:
-    - builder
-  extends:
-    - .base
-  needs:
-    - deploy:prepare
-  script:
-    - mkdir -p ~/.ssh
-    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-    - chmod -R 700 ~/.ssh
-    - >
-      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
-      "kubectl apply -f deployment.yml"
-
+#deploy:run:
+#  tags:
+#    - builder
+#  extends:
+#    - .base
+#  needs:
+#    - deploy:prepare
+#  script:
+#    - mkdir -p ~/.ssh
+#    - echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+#    - chmod -R 700 ~/.ssh
+#    - >
+#      ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
 #      "cd /home/deployer/db-project/src/pr7/ &&
 #      docker compose up -d"
