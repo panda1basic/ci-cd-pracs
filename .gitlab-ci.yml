@@ -39,11 +39,11 @@ push:
   variables:
     REQUIREMENTS_PATH: $PROJECT_PATH
 
-#deploy:
-#  stage: deploy
-#  needs:
-#    - push
-#  trigger:
-#    strategy: depend
-#    include:
-#      - local: pipelines/deploy.yml
+deploy:
+  stage: deploy
+  needs:
+    - push
+  trigger:
+    strategy: depend
+    include:
+      - local: pipelines/deploy.yml

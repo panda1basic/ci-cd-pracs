@@ -13,8 +13,13 @@ deploy:prepare:
     - chmod -R 700 ~/.ssh
     - >
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
-      "cd /home/deployer/db-project/src/pr7/ &&
-      sed -i.bak '/PROD_IMAGE_$APP_DIR/ c\PROD_IMAGE_$APP_DIR=burmatovdd/$APP_DIR:$CI_COMMIT_SHA' ./.env"
+      "export IMAGE_NAME=$IMAGE_NAME && 
+      envsubst < deployment.yaml"
+  variables:
+    IMAGE_NAME: burmatovdd/k8s-app:$CI_COMMIT_SHA
+
+#      "cd /home/deployer/db-project/src/pr7/ &&
+#      sed -i.bak '/PROD_IMAGE_$APP_DIR/ c\PROD_IMAGE_$APP_DIR=burmatovdd/$APP_DIR:$CI_COMMIT_SHA' ./.env"
 
 
 deploy:run:
@@ -30,5 +35,7 @@ deploy:run:
     - chmod -R 700 ~/.ssh
     - >
       ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa deployer@89.169.1.105
-      "cd /home/deployer/db-project/src/pr7/ &&
-      docker compose up -d"
+      "kubectl apply -f deployment.yaml"
+
+#      "cd /home/deployer/db-project/src/pr7/ &&
+#      docker compose up -d"
