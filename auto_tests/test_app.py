@@ -1,5 +1,5 @@
 import pytest
-from src.pr3.app import app
+from src.pr8.app import app
 
 @pytest.fixture
 def client():
