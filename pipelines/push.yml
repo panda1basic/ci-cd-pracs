@@ -10,4 +10,4 @@ push:
     - docker build -t $IMAGE_NAME -f $PROJECT_PATH/Dockerfile .
     - docker push $IMAGE_NAME
   variables:
-    $IMAGE_NAME: "burmatovdd/k8s-app:$CI_COMMIT_SHA"
+    IMAGE_NAME: burmatovdd/k8s-app:$CI_COMMIT_SHA
