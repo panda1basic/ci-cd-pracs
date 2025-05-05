@@ -5,7 +5,7 @@ stages:
   - deploy
 
 variables:
-  PROJECT_PATH: src/pr7
+  PROJECT_PATH: src/pr8
 
 linting:
   stage: lint
@@ -25,9 +25,8 @@ testing:
     include:
       - local: pipelines/python-tests.yml
   variables:
-    PROJECT_PATH: ${PROJECT_PATH}/auth_service/app.py
-    TEST_PATH: auto_tests/test_auth.py
-    REQUIREMENTS_PATH: src/pr7
+    TEST_PATH: auto_tests/test_app.py
+    REQUIREMENTS_PATH: $PROJECT_PATH
 
 push:
   stage: push
@@ -40,11 +39,11 @@ push:
   variables:
     REQUIREMENTS_PATH: $PROJECT_PATH
 
-deploy:
-  stage: deploy
-  needs:
-    - push
-  trigger:
-    strategy: depend
-    include:
-      - local: pipelines/deploy.yml
+#deploy:
+#  stage: deploy
+#  needs:
+#    - push
+#  trigger:
+#    strategy: depend
+#    include:
+#      - local: pipelines/deploy.yml
