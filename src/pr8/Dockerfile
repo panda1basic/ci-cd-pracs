@@ -5,4 +5,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 FROM builder as prod
 COPY src/pr8/app.py app.py
+EXPOSE 5000
 CMD ["python", "app.py"]
