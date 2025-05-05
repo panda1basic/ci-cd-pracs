@@ -6,7 +6,7 @@ linting:
   extends:
     - .base
     - .base-python
-    - .base-pr4
+#    - .base-pr4
   script:
     - flake8 --config=confs/.flake8 --statistics $PROJECT_PATH
 
