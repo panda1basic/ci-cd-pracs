@@ -1,4 +1,6 @@
-name: Run Tests
+# .github/workflows/ci.yml
+
+name: CI & Docker Build
 
 on:
   push:
@@ -8,6 +10,7 @@ on:
 
 jobs:
   test:
+    name: Run Python Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -15,7 +18,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: Expose repo root to PYTHONPATH
-        run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+        run: echo "PYTHONPATH=${{ github.workspace }}/src" >> $GITHUB_ENV
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -27,11 +30,35 @@ jobs:
           python -m venv venv
           . venv/bin/activate
           pip install --upgrade pip
-          # для каждого requirements.txt под src/ установим зависимости
-          find src -type f -name requirements.txt -print0 \
-            | xargs -0 -n1 pip install -r
+          find src -type f -name requirements.txt \
+            | xargs -n1 pip install -r
 
-      - name: Run tests
+      - name: Run pytest
         run: |
           . venv/bin/activate
           pytest auto_tests
+
+  build-and-push:
+    name: Build & Push Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v4
+        with:
+          context: src/pr3
+          file: src/pr3/Dockerfile
+          push: true
+          tags: |
+            panda1basic/flask-app:latest
+            panda1basic/flask-app:${{ github.sha }}
