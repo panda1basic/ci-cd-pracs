@@ -15,6 +15,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set PYTHONPATH
+        run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+
       - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
@@ -27,7 +30,7 @@ jobs:
           pip install --upgrade pip
           pip install -r src/pr2/requirements.txt
 
-      - name: Test calculator (pr2)
+      - name: Run calculator tests
         run: |
           . venv/bin/activate
           pytest auto_tests/test_calculator.py
@@ -50,7 +53,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build & push flask-app image
+      - name: Build and push flask-app image
         uses: docker/build-push-action@v4
         with:
           context: src/pr3
@@ -87,6 +90,7 @@ jobs:
       - name: Bring up compose stack
         working-directory: src/pr3
         run: |
+          docker-compose down || true
           docker-compose up -d
           sleep 10
 
