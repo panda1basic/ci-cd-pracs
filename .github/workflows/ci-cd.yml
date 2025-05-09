@@ -90,10 +90,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      - name: Copy .env into compose dir
-        run: |
-          cp src/pr3/.env src/pr3/.env
-
       - name: Pull Docker images with env
         working-directory: src/pr3
         run: |
