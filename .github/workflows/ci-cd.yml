@@ -71,8 +71,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy containers via Docker Compose (v1)
+      - name: Deploy containers via Docker Compose
         working-directory: src/pr3
         run: |
           docker-compose -f docker-compose.dev.yml pull || true
+
+          docker rm -f flask-app || true
+
           docker-compose -f docker-compose.dev.yml up -d
