@@ -90,19 +90,23 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y docker-compose
 
-      - name: Pull Docker images
-        working-directory: src/pr3
+      - name: Copy .env into compose dir
         run: |
-          docker-compose pull
+          cp src/pr3/.env src/pr3/.env
 
-      - name: Bring up compose stack
+      - name: Pull Docker images with env
         working-directory: src/pr3
         run: |
-          docker-compose down || true
-          docker-compose up -d
+          docker-compose --env-file .env pull
+
+      - name: Bring up compose stack with env
+        working-directory: src/pr3
+        run: |
+          docker-compose --env-file .env down || true
+          docker-compose --env-file .env up -d
           sleep 10
 
       - name: List running containers
         working-directory: src/pr3
         run: |
-          docker-compose ps
+          docker-compose --env-file .env ps
