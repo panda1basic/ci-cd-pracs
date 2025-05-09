@@ -65,8 +65,16 @@ jobs:
 
       - name: Smoke-test /metrics endpoint
         run: |
-          docker run --rm panda1basic/flask-app:latest \
-            sh -c "apk add --no-cache curl && curl -f http://localhost:5000/metrics"
+          docker run -d --name smoke-flask -p 5000:5000 panda1basic/flask-app:latest
+          for i in {1..10}; do
+            if curl -s http://localhost:5000/metrics; then
+              echo "Metrics endpoint is up"
+              break
+            fi
+            echo "Waiting for /metrics..."
+            sleep 1
+          done
+          docker rm -f smoke-flask
 
   compose-check:
     name: Docker Compose Check
