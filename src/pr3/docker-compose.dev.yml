@@ -1,6 +1,6 @@
 services:
   web:
-    image: burmatovdd/flask-app:1.0.0
+    image: panda1basic/flask-app:1.0.0
     container_name: flask-app
     ports:
       - '8090:5000'
