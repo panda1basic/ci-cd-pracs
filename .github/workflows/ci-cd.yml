@@ -7,7 +7,7 @@ on:
 jobs:
   test:
     name: Run Python Tests
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -36,7 +36,7 @@ jobs:
 
   build-and-push:
     name: Build & Push Docker Image
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     needs: test
 
     steps:
@@ -60,39 +60,17 @@ jobs:
             panda1basic/flask-app:${{ github.sha }}
 
   deploy:
-    name: Deploy to VM
-    runs-on: ubuntu-latest
+    name: Deploy on Self-Hosted VM
+    runs-on: self-hosted
     needs: build-and-push
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Debug SSH key presence
+      - name: Deploy containers via Docker Compose
+        working-directory: src/pr3
         run: |
-          if [ -z "$SSH_PRIVATE_KEY" ]; then
-            echo "SSH_PRIVATE_KEY is EMPTY!"
-            exit 1
-          else
-            echo "SSH_PRIVATE_KEY is set (length: $(echo -n "$SSH_PRIVATE_KEY" | wc -c) characters)"
-          fi
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Setup SSH agent
-        uses: webfactory/ssh-agent@v0.8.0
-        with:
-          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-      - name: Copy compose and env to VM
-        run: |
-          scp src/pr3/docker-compose.dev.yml ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/ci-cd-pracs/src/pr3/docker-compose.dev.yml
-          scp src/pr3/.env                ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }}:~/ci-cd-pracs/src/pr3/.env
-
-      - name: Pull and restart containers on VM
-        run: |
-          ssh ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-            cd ~/ci-cd-pracs/src/pr3
-            docker-compose -f docker-compose.dev.yml pull
-            docker-compose -f docker-compose.dev.yml up -d
-          EOF
+          # загружаем свежий образ (на случай, если latest)
+          docker-compose.dev.yml pull || true
+          docker-compose -f docker-compose.dev.yml up -d
