@@ -71,11 +71,12 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy containers via Docker Compose
-        working-directory: src/pr3
+      - name: Deploy with plain Docker commands
         run: |
-          docker-compose -f docker-compose.dev.yml pull || true
+          docker stop flask-app || true
+          docker rm   flask-app || true
 
-          docker rm -f flask-app || true
-
-          docker-compose -f docker-compose.dev.yml up -d
+          docker run -d \
+            --name flask-app \
+            -p 8090:5000 \
+            panda1basic/flask-app:latest
