@@ -68,6 +68,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Debug SSH key presence
+        run: |
+          if [ -z "$SSH_PRIVATE_KEY" ]; then
+            echo "SSH_PRIVATE_KEY is EMPTY!"
+            exit 1
+          else
+            echo "SSH_PRIVATE_KEY is set (length: $(echo -n "$SSH_PRIVATE_KEY" | wc -c) characters)"
+          fi
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+
       - name: Setup SSH agent
         uses: actions/ssh-agent@v0.9.0
         with:
