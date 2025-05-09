@@ -9,13 +9,12 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      PYTEST_ADDOPTS: --maxfail=1 --disable-warnings -q
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Expose src/ to Python
+      - name: Expose repo root to PYTHONPATH
         run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
 
       - name: Set up Python
@@ -23,14 +22,14 @@ jobs:
         with:
           python-version: '3.9'
 
-      - name: Install dependencies
+      - name: Install all requirements
         run: |
           python -m venv venv
           . venv/bin/activate
           pip install --upgrade pip
-          pip install -r src/pr2/requirements.txt
-          # pip install -r src/pr7/requirements.txt
-          # pip install -r src/pr8/requirements.txt
+          # для каждого requirements.txt под src/ установим зависимости
+          find src -type f -name requirements.txt -print0 \
+            | xargs -0 -n1 pip install -r
 
       - name: Run tests
         run: |
