@@ -3,40 +3,38 @@ name: CI & CD Pipeline
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   test:
     name: Run Python Tests
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Expose repo root to PYTHONPATH
-        run: echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
-
-      - name: Set up Python
+      - name: Set up Python 3.9
         uses: actions/setup-python@v4
         with:
           python-version: '3.9'
 
-      - name: Install all requirements
+      - name: Install pr2 dependencies
         run: |
           python -m venv venv
           . venv/bin/activate
           pip install --upgrade pip
-          find src -type f -name requirements.txt \
-            | xargs -n1 pip install -r
+          pip install -r src/pr2/requirements.txt
 
-      - name: Run pytest
+      - name: Test calculator (pr2)
         run: |
           . venv/bin/activate
-          pytest auto_tests
+          pytest auto_tests/test_calculator.py
 
   build-and-push:
-    name: Build & Push Docker Image
-    runs-on: self-hosted
+    name: Build & Push Flask Docker Image
+    runs-on: ubuntu-latest
     needs: test
 
     steps:
@@ -52,7 +50,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push image
+      - name: Build & push flask-app image
         uses: docker/build-push-action@v4
         with:
           context: src/pr3
@@ -62,21 +60,37 @@ jobs:
             panda1basic/flask-app:latest
             panda1basic/flask-app:${{ github.sha }}
 
-  deploy:
-    name: Deploy on Self-Hosted VM
-    runs-on: self-hosted
+      - name: Smoke-test /metrics endpoint
+        run: |
+          docker run --rm panda1basic/flask-app:latest \
+            sh -c "apk add --no-cache curl && curl -f http://localhost:5000/metrics"
+
+  compose-check:
+    name: Docker Compose Check
+    runs-on: ubuntu-latest
     needs: build-and-push
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Deploy with plain Docker commands
+      - name: Install Docker Compose
         run: |
-          docker stop flask-app || true
-          docker rm   flask-app || true
+          sudo apt-get update
+          sudo apt-get install -y docker-compose
 
-          docker run -d \
-            --name flask-app \
-            -p 8090:5000 \
-            panda1basic/flask-app:latest
+      - name: Pull Docker images
+        working-directory: src/pr3
+        run: |
+          docker-compose pull
+
+      - name: Bring up compose stack
+        working-directory: src/pr3
+        run: |
+          docker-compose up -d
+          sleep 10
+
+      - name: List running containers
+        working-directory: src/pr3
+        run: |
+          docker-compose ps
