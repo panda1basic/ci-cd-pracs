@@ -3,7 +3,7 @@ groups:
     rules:
       - alert: TestAlert
         expr: vector(1)
-        for: 0s
+        for: 10s
         labels:
           severity: info
         annotations:
