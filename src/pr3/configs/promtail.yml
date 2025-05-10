@@ -19,4 +19,16 @@ scrape_configs:
       - source_labels: ["__meta_docker_container_log_path"]
         target_label: "__path__"
       - source_labels: ["__meta_docker_container_name"]
-        target_label: "container"
+        target_label: "service_name"
+
+  - job_name: flask-app-logs
+    static_configs:
+      - targets: ["localhost"]
+        labels:
+          job: flask-app
+          __path__: /var/lib/docker/containers/*/*flask-app*.log
+    pipeline_stages:
+      - docker: {}
+    relabel_configs:
+      - source_labels: ["__meta_docker_container_name"]
+        target_label: "service_name"
