@@ -11,8 +11,8 @@ route:
 receivers:
   - name: telegram
     telegram_configs:
-      - bot_token: "7225889573:AAF_ACKcR3Mo-D2qhrQ4zY-smf_Q39IC1FM"
-        chat_id: -4634615221
+      - bot_token: "7569232236:AAEz4EcMzqDuAZMFgUcBUGkljaXiIo6D6XU"
+        chat_id: 840348837
         message: |
           {{- range .Alerts }}
           *[{{ .Status }}]* {{ .Labels.alertname }}

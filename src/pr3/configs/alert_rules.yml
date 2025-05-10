@@ -1,11 +1,11 @@
 groups:
-  - name: container-availability
+  - name: flask-test
     rules:
-      - alert: FlaskAppContainerDown
-        expr: absent(container_last_seen{name="flask-app"})
+      - alert: TestAlert
+        expr: vector(1)
         for: 1m
         labels:
-          severity: critical
+          severity: info
         annotations:
-          summary: "Контейнер flask-app не найден"
-          description: "cAdvisor не видел контейнер flask-app более 1 минуты."
+          summary: "🧪 Это тестовое уведомление"
+          description: "Alertmanager → Telegram работает корректно"

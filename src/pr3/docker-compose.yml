@@ -30,6 +30,7 @@ services:
       - '9090:9090'
     volumes:
       - ./${PROMETHEUS_PATH}:/etc/prometheus/prometheus.yml:ro
+      - ./configs/alert_rules.yml:/etc/prometheus/alert_rules.yml:ro
     restart: always
 
   alertmanager:
