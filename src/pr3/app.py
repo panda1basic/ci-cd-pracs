@@ -1,29 +1,20 @@
 from flask import Flask, Response, request, jsonify
-from prometheus_client import (
-    Counter,
-    generate_latest,
-    CONTENT_TYPE_LATEST,
-)
+from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
 from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
-
 PrometheusMetrics(app)
 
-REQUESTS = Counter(
+REQ = Counter(
     "flask_app_requests_total",
-    "Общее число HTTP-запросов к Flask-приложению",
+    "HTTP-запросы к Flask-приложению",
     ["method", "endpoint", "http_status"],
 )
 
 @app.after_request
-def after_request(response):
-    REQUESTS.labels(
-        method=request.method,
-        endpoint=request.path,
-        http_status=response.status_code,
-    ).inc()
-    return response
+def after(resp):
+    REQ.labels(request.method, request.path, resp.status_code).inc()
+    return resp
 
 @app.route("/")
 def home():
