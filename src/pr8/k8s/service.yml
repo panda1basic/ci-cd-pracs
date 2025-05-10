@@ -3,8 +3,10 @@ kind: Service
 metadata:
   name: flask-service
 spec:
+  type: ClusterIP
   selector:
     app: flask-app
   ports:
-    - port: 5000
+    - name: http
+      port: 80
       targetPort: 5000
