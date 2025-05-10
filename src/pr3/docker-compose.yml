@@ -39,7 +39,7 @@ services:
     ports:
       - '9093:9093'
     volumes:
-      - ./${ALERT_PATH}:/etc/alertmanager/alertmanager.yml:ro
+      - ./configs/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
     restart: always
 
   grafana:
