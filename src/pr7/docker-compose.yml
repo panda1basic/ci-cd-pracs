@@ -1,28 +1,35 @@
+version: '3.8'
 services:
   auth_service:
-    image: ${PROD_IMAGE_auth_service}
+    build: ./auth_service
     container_name: auth_service
     ports:
       - '5001:5001'
-    restart: always
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 10s
+      retries: 3
 
   orders_service:
-    image: ${PROD_IMAGE_orders_service}
+    build: ./orders_service
     container_name: orders_service
     ports:
       - '5002:5002'
-    restart: always
     depends_on:
-      - auth_service
+      auth_service:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+      interval: 10s
+      retries: 3
 
   nginx:
     image: nginx:latest
-    container_name: nginx
+    container_name: api_gateway
     ports:
       - '80:80'
     volumes:
-      - ${NGINX_CONF_PATH}:/etc/nginx/nginx.conf
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
     depends_on:
       - auth_service
       - orders_service
-

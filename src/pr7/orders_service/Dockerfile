@@ -1,8 +1,7 @@
-FROM python:3.9-alpine as builder
+FROM python:3.9-slim
 WORKDIR /app
-COPY src/pr7/requirements.txt .
-RUN pip install -r requirements.txt
-
-FROM builder as prod
-COPY src/pr7/orders_service/app.py app.py
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY app.py .
+EXPOSE 5002
 CMD ["python", "app.py"]
