@@ -2,3 +2,5 @@ flask
 pytest
 flake8
 prometheus_client
+prometheus_flask_exporter
+gunicorn

@@ -1,12 +1,15 @@
-from flask import Flask, Response, request
-from prometheus_client import Counter, generate_latest, CONTENT_TYPE_LATEST
+from flask import Flask, Response, request, jsonify
+from prometheus_client import Counter
+from prometheus_flask_exporter import PrometheusMetrics
 
 app = Flask(__name__)
 
+metrics = PrometheusMetrics(app)
+
 REQUESTS = Counter(
-    'flask_app_requests_total',
-    'Общее число HTTP-запросов к Flask-приложению',
-    ['method', 'endpoint', 'http_status']
+    "flask_app_requests_total",
+    "Общее число HTTP-запросов к Flask-приложению",
+    ["method", "endpoint", "http_status"],
 )
 
 @app.after_request
@@ -14,17 +17,18 @@ def after_request(response):
     REQUESTS.labels(
         method=request.method,
         endpoint=request.path,
-        http_status=response.status_code
+        http_status=response.status_code,
     ).inc()
     return response
 
-@app.route('/')
+@app.route("/")
 def home():
-    return 'Hello, Monitoring!'
+    return "Hello, Monitoring!"
 
-@app.route('/metrics')
-def metrics():
-    return Response(generate_latest(), mimetype=CONTENT_TYPE_LATEST)
+@app.route("/health")
+def health():
+    return jsonify(status="ok"), 200
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
